@@ -66,7 +66,7 @@ const Patcher = create('CatgirlsPlugin');
           options: [
             {
               name: "type",
-              displayName: "type",
+              displayName: "Type",
     
               description: "Image type",
               displayDescription: "Image type",
@@ -80,11 +80,11 @@ const Patcher = create('CatgirlsPlugin');
               })),
             },
             {
-              name: "Send in Chat",
-              displayName: "sendinchat",
+              name: "whisper",
+              displayName: "Whisper",
     
-              description: "Publicly send the image",
-              displayDescription: "Publicly send the image",
+              description: "Sends the image to yourself instead of the server",
+              displayDescription: "Sends the image to yourself instead of the server",
     
               type: ApplicationCommandOptionType.Boolean,
               required: false
@@ -93,10 +93,10 @@ const Patcher = create('CatgirlsPlugin');
     
           execute: async function (args, message) {
             const text = args[0].value;
-            const sendinchat = args[1]?.value ?? true;
+            const whisper = args[1]?.value ?? true;
             const resp = await REST.get(`https://nekos.life/api/v2/img/${text}`);
             if (resp.ok) {
-              if (sendinchat) {
+              if (whisper) {
                 const { width, height } = await getImageSize(resp.body["url"]);
                 const embed = {
                   type: "rich",
