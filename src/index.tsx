@@ -79,14 +79,24 @@ const Patcher = create('CatgirlsPlugin');
                 value: x,
               })),
             },
+            {
+              name: "Send in Chat",
+              displayName: "sendinchat",
+    
+              description: "Publicly send the image or send so only you can see",
+              displayDescription: "Publicly send the image or send so only you can see",
+    
+              type: ApplicationCommandOptionType.Boolean,
+              required: false
+            },
           ],
     
           execute: async function (args, message) {
             const text = args[0].value;
-            const whisper = args[1]?.value ?? true;
+            const sendinchat = args[1]?.value ?? true;
             const resp = await REST.get(`https://nekos.life/api/v2/img/${text}`);
             if (resp.ok) {
-              if (whisper) {
+              if (sendinchat) {
                 const { width, height } = await getImageSize(resp.body["url"]);
                 const embed = {
                   type: "rich",
@@ -131,105 +141,7 @@ const Patcher = create('CatgirlsPlugin');
             }
           },
         };
-
-
-
-/*
-        const catboys_command: Command = {
-          id: "catboys-command",
-    
-          name: "catboys",
-          displayName: "catboys",
-    
-          description: "Sends an image from the catboys.com API.",
-          displayDescription: "Sends an image from the catboys API.",
-    
-          type: ApplicationCommandType.Chat,
-          inputType: ApplicationCommandInputType.BuiltInText,
-    
-          options: [
-            {
-              name: "type",
-              displayName: "type",
-    
-              description: "Image type",
-              displayDescription: "Image type",
-    
-              type: ApplicationCommandOptionType.String,
-              required: true,
-              choices: catboys_img_types.map((x) => ({
-                name: x,
-                displayName: x,
-                value: x,
-              })),
-            },
-          ],
-    
-          execute: async function (args, message) {
-            const text = args[0].value;
-            const whisper = args[1]?.value ?? true;
-            const resp = await REST.get(`https://api.catboys.com/${text}`);
-            if (resp.ok) {
-              if (whisper) {
-                const { width, height } = await getImageSize(resp.body["url"]);
-                const embed = {
-                  type: "rich",
-                  title: text === "img" ? 'random image' : `random ${text} image`,
-                  image: {
-                    proxy_url: `https://external-content.duckduckgo.com/iu/?u=${resp.body["url"]
-                      }`,
-                    url: resp.body["url"],
-                    width: width,
-                    height: height,
-                  },
-                  footer: {
-                    text: "catboys.com",
-                  },
-                  color: "0x00007d",
-                }
-                if (text === "img" && resp.body['artist'] !== "unknown") {
-                  Object.assign(embed, {
-                    fields: [
-                      {
-                        inline: true,
-                        name: "Artist",
-                        value: `[${resp.body['artist']}](${resp.body['artist_url']})`
-                      } 
-                    ]
-                  });
-                };
-                const component = {
-                  type: 1,
-                  components: [{
-                    type: 2,
-                    style: 5,
-                    label: "View image",
-                    url: resp.body["url"],
-                  }],
-                };
-                sendReply(message?.channel.id ?? "0",
-                  {
-                    embeds: [embed],
-                    components: [component],
-                  },
-                  "catboys.com",
-                  "https://github.com/Catboys-Dev.png",
-                );
-              } else {
-                return {
-                  content: resp.body["url"],
-                };
-              }
-            } else {
-              sendReply(message?.channel.id ?? "0", `An error happened making a request to https://api.catboys.com/${text}`,
-              );
-            }
-          },
-        };
-        */
-    
         this.commands.push(catgirls_command);
-    //  this.commands.push(catboys_command);
       },
 
    onStop() {
