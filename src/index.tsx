@@ -83,8 +83,8 @@ const Patcher = create('CatgirlsPlugin');
               name: "Send in Chat",
               displayName: "sendinchat",
     
-              description: "Publicly send the image or send so only you can see",
-              displayDescription: "Publicly send the image or send so only you can see",
+              description: "Publicly send the image",
+              displayDescription: "Publicly send the image",
     
               type: ApplicationCommandOptionType.Boolean,
               required: false
